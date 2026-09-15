@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffaf4">
+  <title>Миссис Самарская Губерния — территория женских возможностей</title>
+  <style>
+    :root {
+      --red: #bc2e3d;
+      --red-dark: #8e1f31;
+      --coral: #e9685c;
+      --yellow: #f4c951;
+      --cream: #fffaf4;
+      --paper: #fffdf9;
+      --ink: #252126;
+      --muted: #756c6b;
+      --line: rgba(37, 33, 38, .12);
+      --shadow: 0 24px 70px rgba(108, 42, 38, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Georgia, 'Times New Roman', serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.modal-open { overflow: hidden; }
+    button, input, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+
+    .page { overflow: hidden; }
+    .wrap { width: min(1160px, calc(100% - 44px)); margin: 0 auto; }
+    .hero {
+      position: relative;
+      min-height: 760px;
+      padding: 28px 0 84px;
+      background:
+        radial-gradient(circle at 87% 12%, rgba(244, 201, 81, .28), transparent 22%),
+        radial-gradient(circle at 5% 82%, rgba(233, 104, 92, .13), transparent 24%),
+        linear-gradient(125deg, #fffaf4 0%, #fff5ed 54%, #fffbf7 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: -180px;
+      bottom: -210px;
+      border: 1px solid rgba(188, 46, 61, .13);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 630px;
+      height: 630px;
+      right: -235px;
+      bottom: -265px;
+      border: 1px solid rgba(188, 46, 61, .08);
+      border-radius: 50%;
+    }
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: fade-in .7s ease both;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--red-dark);
+      font: 800 11px/1.1 Arial, sans-serif;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 82px;
+      height: 52px;
+      overflow: hidden;
+      border-radius: 9px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(188, 46, 61, .13);
+    }
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .nav-link {
+      color: var(--muted);
+      font: 700 12px/1 Arial, sans-serif;
+      transition: color .2s ease;
+    }
+    .nav-link:hover { color: var(--red); }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(330px, .76fr);
+      gap: clamp(55px, 9vw, 130px);
+      align-items: center;
+      min-height: 638px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 23px;
+      color: var(--red);
+      font: 800 11px/1.2 Arial, sans-serif;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      animation: rise .7s .08s ease both;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 29px;
+      height: 2px;
+      background: var(--yellow);
+    }
+    h1 {
+      max-width: 710px;
+      margin: 0;
+      font-size: clamp(56px, 7.2vw, 96px);
+      font-weight: 400;
+      line-height: .91;
+      letter-spacing: -.055em;
+      animation: rise .8s .16s ease both;
+    }
+    h1 span {
+      display: inline-block;
+      color: transparent;
+      background: linear-gradient(100deg, var(--red) 8%, #e66b53 46%, #efb839 94%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 11px 20px rgba(188, 46, 61, .13));
+    }
+    .hero-copy {
+      max-width: 590px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font: 400 18px/1.52 Arial, sans-serif;
+      animation: rise .8s .24s ease both;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+      margin-top: 34px;
+      animation: rise .8s .32s ease both;
+    }
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      border: 0;
+      border-radius: 100px;
+      padding: 18px 24px 18px 27px;
+      color: #fff;
+      background: var(--red);
+      box-shadow: 0 15px 26px rgba(188, 46, 61, .2);
+      cursor: pointer;
+      font: 800 13px/1 Arial, sans-serif;
+      letter-spacing: .02em;
+      animation: pulse 2.4s infinite;
+      transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .primary-button svg { transition: transform .2s ease; }
+    .primary-button:hover, .primary-button:focus-visible {
+      background: var(--red-dark);
+      box-shadow: 0 18px 30px rgba(142, 31, 49, .26);
+      transform: translateY(-3px);
+      outline: none;
+    }
+    .primary-button:hover svg { transform: translateX(4px); }
+    .hero-note {
+      max-width: 180px;
+      color: var(--muted);
+      font: 11px/1.35 Arial, sans-serif;
+    }
+    .hero-art { position: relative; min-height: 465px; animation: card-in .95s .26s ease both; }
+    .art-circle {
+      position: absolute;
+      inset: 13px 0 0 45px;
+      overflow: hidden;
+      border-radius: 52% 48% 47% 53%;
+      background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(255,225,192,.75));
+      box-shadow: var(--shadow);
+      transform: rotate(7deg);
+    }
+    .art-circle::before {
+      content: '';
+      position: absolute;
+      inset: 25px;
+      border: 1px solid rgba(188, 46, 61, .2);
+      border-radius: inherit;
+    }
+    .art-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 53% 45%;
+      transform: rotate(-7deg) scale(1.08);
+    }
+    .art-label {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      display: grid;
+      place-items: center;
+      width: 118px;
+      height: 118px;
+      padding: 19px;
+      border-radius: 50%;
+      color: var(--ink);
+      background: var(--yellow);
+      text-align: center;
+      font: 800 10px/1.2 Arial, sans-serif;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      transform: rotate(12deg);
+      box-shadow: 0 13px 23px rgba(178, 130, 23, .16);
+    }
+    .art-title {
+      position: absolute;
+      left: 0;
+      bottom: 55px;
+      max-width: 250px;
+      color: var(--red-dark);
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: .93;
+      transform: rotate(-5deg);
+    }
+    .art-subtitle {
+      position: absolute;
+      right: 28px;
+      bottom: 38px;
+      color: var(--muted);
+      font: 700 11px/1.35 Arial, sans-serif;
+      letter-spacing: .1em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+    .star { position: absolute; color: var(--red); font-size: 33px; }
+    .star.one { top: 100px; left: 5px; }
+    .star.two { right: 20px; bottom: 155px; color: var(--yellow); font-size: 25px; }
+
+    .section { padding: 105px 0; }
+    .section-intro { max-width: 700px; margin-bottom: 43px; }
+    .section-kicker {
+      margin: 0 0 14px;
+      color: var(--red);
+      font: 800 11px/1.2 Arial, sans-serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(38px, 5.3vw, 62px);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .section-description {
+      margin: 20px 0 0;
+      color: var(--muted);
+      font: 17px/1.55 Arial, sans-serif;
+    }
+    .benefits-section { background: var(--paper); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 17px;
+    }
+    .benefit {
+      position: relative;
+      min-height: 290px;
+      padding: 29px 27px 25px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      box-shadow: 0 9px 30px rgba(58, 38, 29, .04);
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .benefit:hover { border-color: rgba(188, 46, 61, .3); box-shadow: var(--shadow); transform: translateY(-8px); }
+    .benefit-icon {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 30px;
+      border-radius: 50%;
+      color: var(--red);
+      background: #fff0e8;
+    }
+    .benefit:nth-child(2) .benefit-icon { color: #ad7910; background: #fff6d9; }
+    .benefit:nth-child(3) .benefit-icon { color: #3c8f88; background: #e5f5ef; }
+    .benefit-number { color: var(--muted); font: 800 10px/1 Arial, sans-serif; letter-spacing: .14em; }
+    h3 { margin: 12px 0 12px; font-size: 25px; font-weight: 400; line-height: 1; }
+    .benefit p { margin: 0; color: var(--muted); font: 14px/1.48 Arial, sans-serif; }
+
+    .story-section { background: #fff3eb; }
+    .story-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(50px, 9vw, 120px); align-items: center; }
+    .story-stamp {
+      position: relative;
+      min-height: 370px;
+      display: grid;
+      place-items: center;
+      padding: 60px;
+      border-radius: 50% 44% 48% 53%;
+      background: var(--red);
+      color: #fff;
+      box-shadow: 18px 20px 0 rgba(244, 201, 81, .65);
+      transform: rotate(-5deg);
+    }
+    .story-stamp::after { content: '✦'; position: absolute; top: 32px; right: 40px; color: var(--yellow); font-size: 31px; }
+    .story-stamp strong { display: block; font-size: clamp(42px, 5vw, 68px); font-weight: 400; line-height: .87; }
+    .story-stamp span { display: block; margin-top: 22px; font: 800 11px/1.35 Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .story-copy { transform: translateY(2px); }
+    .story-copy p { margin: 20px 0 0; color: var(--muted); font: 17px/1.57 Arial, sans-serif; }
+    .story-quote { margin-top: 28px !important; padding-left: 18px; border-left: 3px solid var(--yellow); color: var(--red-dark) !important; font-family: Georgia, serif !important; font-size: 24px !important; line-height: 1.2 !important; }
+
+    .audience-section { background: var(--paper); }
+    .audience-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 70px; align-items: start; }
+    .check-list { margin: 0; padding: 0; list-style: none; }
+    .check-list li { display: flex; gap: 15px; padding: 17px 0; border-bottom: 1px solid var(--line); font-size: 21px; line-height: 1.15; }
+    .check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; margin-top: 1px; border-radius: 50%; color: #fff; background: var(--red); font: 700 13px/1 Arial, sans-serif; }
+    .why-box { padding: 34px; border-radius: 19px; color: #fff; background: var(--red-dark); box-shadow: 18px 18px 0 var(--yellow); }
+    .why-box h3 { margin: 0; font-size: 31px; }
+    .why-box p { margin: 18px 0 0; color: rgba(255,255,255,.85); font: 16px/1.55 Arial, sans-serif; }
+
+    .cta-section { position: relative; padding: 116px 0 125px; color: #fff; background: linear-gradient(135deg, var(--red-dark), var(--red)); text-align: center; overflow: hidden; }
+    .cta-section::before, .cta-section::after { content: ''; position: absolute; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; }
+    .cta-section::before { width: 500px; height: 500px; top: -300px; left: -115px; }
+    .cta-section::after { width: 690px; height: 690px; right: -250px; bottom: -530px; }
+    .cta-content { position: relative; z-index: 1; max-width: 750px; margin: 0 auto; }
+    .cta-section .section-kicker { color: var(--yellow); }
+    .cta-section h2 { font-size: clamp(43px, 6vw, 75px); }
+    .cta-section p { max-width: 590px; margin: 22px auto 30px; color: rgba(255,255,255,.83); font: 17px/1.5 Arial, sans-serif; }
+    .cta-section .primary-button { color: var(--ink); background: var(--yellow); box-shadow: 0 14px 27px rgba(80, 20, 21, .25); }
+    .cta-section .primary-button:hover { background: #ffda6a; }
+    .footer { padding: 25px 0; color: var(--muted); background: var(--cream); font: 11px/1.4 Arial, sans-serif; text-align: center; }
+
+    .modal { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px; background: rgba(37, 33, 38, .56); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    .modal.open { opacity: 1; pointer-events: auto; }
+    .modal-card { position: relative; width: min(480px, 100%); padding: 33px; border-radius: 20px; background: var(--paper); box-shadow: 0 24px 70px rgba(0,0,0,.22); transform: translateY(18px); transition: transform .25s ease; }
+    .modal.open .modal-card { transform: translateY(0); }
+    .modal-close { position: absolute; top: 15px; right: 17px; width: 34px; height: 34px; border: 0; border-radius: 50%; color: var(--muted); background: transparent; cursor: pointer; font: 22px/1 Arial, sans-serif; }
+    .modal-close:hover { color: var(--red); background: #fff0e8; }
+    .modal-card h2 { padding-right: 30px; font-size: 38px; }
+    .modal-card p { margin: 12px 0 20px; color: var(--muted); font: 14px/1.45 Arial, sans-serif; }
+    .form-row { display: grid; gap: 7px; margin-top: 14px; }
+    .form-row label { color: var(--ink); font: 800 11px/1.2 Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .form-row input, .form-row textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px; color: var(--ink); background: #fff; outline: none; font: 15px/1.35 Arial, sans-serif; }
+    .form-row textarea { min-height: 88px; resize: vertical; }
+    .form-row input:focus, .form-row textarea:focus { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(233,104,92,.12); }
+    .form-submit { width: 100%; justify-content: center; margin-top: 20px; }
+    .form-success { display: none; padding: 23px 0 8px; color: var(--red-dark); font-size: 23px; line-height: 1.15; }
+    .modal-card.sent .form-content { display: none; }
+    .modal-card.sent .form-success { display: block; }
+
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes card-in { from { opacity: 0; transform: translateY(24px) rotate(4deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 15px 26px rgba(188,46,61,.2); } 50% { box-shadow: 0 15px 26px rgba(188,46,61,.2), 0 0 0 9px rgba(188,46,61,.1); } }
+
+    @media (max-width: 800px) {
+      .wrap { width: min(100% - 36px, 600px); }
+      .hero { min-height: auto; padding-bottom: 65px; }
+      .hero-grid { grid-template-columns: 1fr; min-height: auto; gap: 45px; padding-top: 75px; }
+      .hero-art { min-height: 370px; max-width: 480px; width: 100%; margin: 0 auto; }
+      .art-circle { inset: 5px 15px 0 30px; }
+      .art-label { width: 98px; height: 98px; right: 2px; }
+      .art-title { left: 5px; bottom: 42px; }
+      .art-subtitle { right: 23px; bottom: 27px; }
+      .nav-link { display: none; }
+      .benefits-grid, .story-grid, .audience-grid { grid-template-columns: 1fr; }
+      .section { padding: 75px 0; }
+      .story-grid { gap: 55px; }
+      .story-stamp { min-height: 310px; max-width: 390px; margin: 0 auto; }
+      .audience-grid { gap: 47px; }
+      .why-box { box-shadow: 11px 11px 0 var(--yellow); }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 32px); }
+      .brand { font-size: 9px; letter-spacing: .1em; }
+      .brand-mark { width: 34px; height: 34px; font-size: 19px; }
+      h1 { font-size: clamp(48px, 15vw, 70px); }
+      .hero-copy { font-size: 16px; }
+      .hero-actions { align-items: flex-start; flex-direction: column; }
+      .hero-art { min-height: 300px; }
+      .art-title { bottom: 31px; font-size: 36px; max-width: 190px; }
+      .art-subtitle { bottom: 18px; font-size: 9px; }
+      .star.one { top: 60px; }
+      .benefit { min-height: auto; }
+      .story-stamp { min-height: 270px; padding: 43px; }
+      .story-stamp strong { font-size: 49px; }
+      .story-quote { font-size: 21px !important; }
+      .why-box { padding: 27px; }
+      .modal-card { padding: 27px 21px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero" id="top">
+      <div class="wrap">
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="brand" href="#top"><span class="brand-mark"><img src="logo.jpg" alt="Миссис Самарская Губерния"></span><span>Миссис<br>Самарская Губерния</span></a>
+          <a class="nav-link" href="#about">О проекте</a>
+        </nav>
+        <div class="hero-grid">
+          <div class="hero-content">
+            <p class="eyebrow">Территория женских возможностей</p>
+            <h1>Разрешите себе <span>больше</span></h1>
+            <p class="hero-copy">Проект для женщин и мам Самарской области, которые хотят раскрыть себя, выйти за рамки привычных ролей и почувствовать собственную силу.</p>
+            <div class="hero-actions">
+              <button class="primary-button open-modal" type="button">Хочу стать участницей <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h11M10 4.5 14.5 9 10 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <span class="hero-note">Оставьте заявку или напишите мне — я отвечу на вопросы</span>
+            </div>
+          </div>
+          <div class="hero-art" aria-label="Вдохновляющая иллюстрация проекта">
+            <div class="art-circle"><img class="art-photo" src="Ekaterina.png" alt="Екатерина Михайлова на сценическом образе"></div>
+            <span class="star one">✦</span><span class="star two">✦</span>
+            <div class="art-label">Время<br>выбрать<br>себя</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section benefits-section" id="about">
+        <div class="wrap">
+          <div class="section-intro">
+            <p class="section-kicker">Что вас ждёт</p>
+            <h2>Пространство,<br>где вы расцветаете</h2>
+            <p class="section-description">Здесь не нужно соответствовать чужим ожиданиям. Здесь можно услышать себя, попробовать новое и увидеть, сколько в вас силы.</p>
+          </div>
+          <div class="benefits-grid">
+            <article class="benefit">
+              <div class="benefit-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.5s-7.5-4.25-7.5-10.1A4.4 4.4 0 0 1 12 7.8a4.4 4.4 0 0 1 7.5 2.6c0 5.85-7.5 10.1-7.5 10.1Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 3.5c1.15.2 1.85.9 2.05 2.05M16 3.5c-1.15.2-1.85.9-2.05 2.05" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              <span class="benefit-number">01 / ВНУТРИ</span>
+              <h3>Внутренняя трансформация</h3>
+              <p>Конкурс помогает стать увереннее, расправить крылья и позволить себе мечтать о большем.</p>
+            </article>
+            <article class="benefit">
+              <div class="benefit-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5h16M6 19.5V9.2l6-3.7 6 3.7v10.3M9 19.5v-5h6v5M3.5 9.8 12 4.5l8.5 5.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="benefit-number">02 / СНАРУЖИ</span>
+              <h3>Подготовка и яркий финал</h3>
+              <p>Новые задания, работа с профессионалами, творческие испытания, красивые образы и выход на большую сцену.</p>
+            </article>
+            <article class="benefit">
+              <div class="benefit-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M2.8 19.5c.5-3 2.2-4.7 5.2-4.7s4.7 1.7 5.2 4.7M13 15.5c2.7-.85 5.4.4 6.1 3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              <span class="benefit-number">03 / РЯДОМ</span>
+              <h3>Поддерживающее сообщество</h3>
+              <p>Женщины, которые вдохновляют, поддерживают и помогают друг другу смелее идти к своим целям.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section story-section">
+        <div class="wrap story-grid">
+          <div class="story-stamp"><div><strong>Я<br>прошла<br>этот путь</strong><span>и знаю его с двух сторон</span></div></div>
+          <div class="story-copy">
+            <p class="section-kicker">Личная история</p>
+            <h2>От участницы<br>до члена комитета</h2>
+            <p>Я прошла этот путь как участница конкурса, вышла на федеральную площадку «Миссис России», а сегодня являюсь членом комитета проекта.</p>
+            <p>Поэтому я знаю его с двух сторон: и как участница, и как человек, который помогает другим женщинам поверить в себя.</p>
+            <p class="story-quote">«Вы не обязаны выбирать между семьёй и собой. В вашей жизни есть место и для мечты».</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section audience-section">
+        <div class="wrap audience-grid">
+          <div>
+            <p class="section-kicker">Это для вас, если</p>
+            <h2>Вы женщина.<br>Вы мама.<br>Вы — больше.</h2>
+            <ul class="check-list">
+              <li><span class="check">✓</span><span>Живёте в Самарской губернии</span></li>
+              <li><span class="check">✓</span><span>Любого возраста и профессии</span></li>
+              <li><span class="check">✓</span><span>Готовы открывать новые грани себя</span></li>
+            </ul>
+          </div>
+          <div class="why-box">
+            <h3>Почему стоит попробовать?</h3>
+            <p>Потому что мама может быть не только мамой. Она может быть яркой, успешной, интересной личностью — со своими мечтами и целями.</p>
+            <p>Возможно, именно здесь начнётся ваша новая история.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section" id="apply">
+        <div class="wrap cta-content">
+          <p class="section-kicker">Ваш шаг начинается здесь</p>
+          <h2>Разрешите себе больше</h2>
+          <p>Подайте заявку на участие в проекте «Миссис Самарская Губерния» — и, возможно, именно здесь начнётся ваша новая история.</p>
+          <button class="primary-button open-modal" type="button">Хочу стать участницей <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h11M10 4.5 14.5 9 10 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">© Миссис Самарская Губерния · Территория женских возможностей</footer>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+      <div class="form-content">
+        <h2 id="modalTitle">Оставьте заявку</h2>
+        <p>Напишите свои контакты, и я свяжусь с вами, чтобы рассказать о проекте подробнее.</p>
+        <form id="applicationForm">
+          <div class="form-row"><label for="name">Ваше имя</label><input id="name" name="name" required placeholder="Как к вам обращаться?"></div>
+          <div class="form-row"><label for="contact">Телефон или Telegram</label><input id="contact" name="contact" required placeholder="Удобный способ связи"></div>
+          <div class="form-row"><label for="message">О себе</label><textarea id="message" name="message" placeholder="Расскажите немного о себе (необязательно)"></textarea></div>
+          <button class="primary-button form-submit" type="submit">Отправить заявку <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h11M10 4.5 14.5 9 10 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </form>
+      </div>
+      <div class="form-success">Спасибо! Заявка подготовлена.<br><small>Я свяжусь с вами по указанному контакту.</small></div>
+    </div>
+  </div>
+  <script>
+    const modal = document.getElementById('modal');
+    const modalCard = modal.querySelector('.modal-card');
+    const form = document.getElementById('applicationForm');
+    const openButtons = document.querySelectorAll('.open-modal');
+    const closeModal = () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+    openButtons.forEach((button) => button.addEventListener('click', () => {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      modal.querySelector('input').focus();
+    }));
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeModal(); });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      modalCard.classList.add('sent');
+      window.setTimeout(() => {
+        modalCard.classList.remove('sent');
+        form.reset();
+        closeModal();
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
